@@ -1,13 +1,11 @@
-jsonify
-=======
-
-CLI Output => JSON Array
+網易公開課下載工具
+==================
 
 ```bash
-$ iostat 1 | jsonify -t --filter="^\d"
+$ necourse -o /tmp http://v.163.com/special/sp/introductiontopsychology.html
 ```
 
-![screenshot](./screenshots/screenshot.gif)
+![screenshot](./screenshot.png)
 
 ## License
 
