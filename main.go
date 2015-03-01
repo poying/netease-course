@@ -44,11 +44,11 @@ func action(c *cli.Context) {
 		return
 	}
 
-	//defer func() {
-	//if err := recover(); err != nil {
-	//fmt.Println("Error: ", err)
-	//}
-	//}()
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println("Error: ", err)
+		}
+	}()
 
 	outputDir, err := filepath.Abs(c.String("out"))
 	check(err)
@@ -83,7 +83,7 @@ func tick(course necourse.Course, task *Task, spinner *spin.Spinner) {
 	spinFram := spinner.Next()
 	iter := task.Status.Iter()
 
-	fmt.Print("\033[0J\n")
+	fmt.Print("\033[0;0H\033[0J\n")
 	fmt.Printf("   \033[36m%s\033[m\n\n", course.Title())
 	lines := 3
 
@@ -107,8 +107,6 @@ func tick(course necourse.Course, task *Task, spinner *spin.Spinner) {
 
 		fmt.Printf("   \033[90m%s\033[m\n", video.Title())
 	}
-
-	fmt.Printf("\033[%dA", lines)
 }
 
 func check(err error) {
