@@ -4,11 +4,16 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"fmt"
 	"path"
+	"strings"
+	"strconv"
 	"path/filepath"
 
 	"github.com/poying/necourse/necourse"
 )
+
+var pathSeparator = strconv.QuoteRune(os.PathSeparator)
 
 type Downloader struct {
 	concurrent uint
@@ -78,7 +83,7 @@ func (d *Downloader) downloadVideo(video *necourse.Video, status *VideoStatus, o
 
 	url := video.Url(opts.Quality)
 	extname := filepath.Ext(url)
-	outputFile := path.Join(opts.OutputDir, video.Id()) + extname
+	outputFile := path.Join(opts.OutputDir, videoFileName(video)) + extname
 
 	writer, err := os.Create(outputFile)
 	if err != nil {
@@ -99,4 +104,10 @@ func (d *Downloader) downloadVideo(video *necourse.Video, status *VideoStatus, o
 	if err != nil {
 		status.err = err
 	}
+}
+
+func videoFileName(video *necourse.Video) string {
+	number := video.PNumber()
+	title := strings.Replace(video.Title(), pathSeparator, "_", -1)
+	return fmt.Sprintf("%d. %s", number, title)
 }

@@ -9,6 +9,7 @@ type SubTitleData struct {
 type VideoData struct {
 	ImgPath               string         `json:"imgpath"`
 	MId                   string         `json:"mid"`
+	PNumber               int            `json:"pnumber"`
 	MLength               int            `json:"mlength"`
 	Mp4Size               int            `json:"mp4size"`
 	Mp4SizeOrigin         int            `json:"mp4sizeOrigin"`
@@ -62,6 +63,10 @@ func (s *Subtitle) getData() *SubTitleData {
 
 type Video struct {
 	data VideoData
+}
+
+func (v *Video) PNumber() int {
+	return v.getData().PNumber
 }
 
 func (v *Video) Id() string {
