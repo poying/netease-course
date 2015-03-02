@@ -16,7 +16,7 @@ var progName = filepath.Base(os.Args[0])
 func main() {
 	app := cli.NewApp()
 	app.Name = progName
-	app.Version = "0.0.0"
+	app.Version = Version
 	cli.AppHelpTemplate = appHelpTemplate
 	app.Action = action
 
@@ -30,6 +30,10 @@ func main() {
 			Name:  "out,o",
 			Value: ".",
 			Usage: "檔案存放位置",
+		},
+		cli.BoolFlag{
+			Name:  "hd",
+			Usage: "高畫質",
 		},
 	}
 
@@ -60,8 +64,13 @@ func action(c *cli.Context) {
 
 	task := downloader.Task(course)
 
+	quality := necourse.SD
+	if c.Bool("hd") {
+		quality = necourse.HD
+	}
+
 	downloader.Download(task, &Options{
-		Quality:   necourse.SD,
+		Quality:   quality,
 		OutputDir: outputDir,
 	})
 
